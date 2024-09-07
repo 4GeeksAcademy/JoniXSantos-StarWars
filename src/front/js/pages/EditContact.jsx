@@ -2,13 +2,14 @@ import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext.js";
 import { useNavigate } from "react-router-dom";
 
-export const AddContact = () => {
+export const EditContact = () => {
     const { store, actions } = useContext(Context);
     const navigate = useNavigate();
-    const [ name, setName ] = useState('');
-    const [ phone, setPhone ] = useState('');
-    const [ email, setEmail ] = useState('');
-    const [ address, setAddress ] = useState('');
+    const contact = store.currentContact;
+    const [ name, setName ] = useState(contact.name);
+    const [ phone, setPhone ] = useState(contact.phone);
+    const [ email, setEmail ] = useState(contact.email);
+    const [ address, setAddress ] = useState(contact.address);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -18,7 +19,7 @@ export const AddContact = () => {
             email: email,
             address: address
         }
-        actions.addContact(dataToSend);
+        actions.editContact(contact, dataToSend);
         navigate("/contact-list");
     }
 
@@ -28,7 +29,7 @@ export const AddContact = () => {
 
     return (
         <>
-            <h1 className="text-center mt-4 mb-4">Add a new contact</h1>
+            <h1 className="text-center mt-4 mb-4">Edit this contact</h1>
             <div className="container d-flex justify-content-center">
                 <form onSubmit={handleSubmit} className="col-6">
                 <div className="mb-3">

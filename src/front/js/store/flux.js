@@ -13,7 +13,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			host: 'https://playground.4geeks.com/contact',
+			slug: 'jonicruz',
+			contacts: [],
+			currentContact: {}
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -46,6 +50,63 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
+			},
+			getContacts: async () => {
+				const uri = `${getStore().host}/agendas/${getStore().slug}/contacts`;
+				const response = await fetch(uri);
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return;
+				};
+				const data = await response.json();
+				setStore({ contacts: data.contacts })
+			},
+			addContact: async (dataToSend) => {
+				const uri = `${getStore().host}/agendas/${getStore().slug}/contacts`;
+				const options = {
+					method: 'POST',
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(dataToSend)
+				};
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return;
+				};
+				getActions().getContacts();
+			},
+			editContact: async (item, dataToSend) => {
+				const uri = `${getStore().host}/agendas/${getStore().slug}/contacts/${item.id}`;
+				const options = {
+					method: 'PUT',
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(dataToSend)
+				};
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return;
+				}
+				getActions().getContacts();
+			},
+			deleteContact: async (item) => {
+				const uri = `${getStore().host}/agendas/${getStore().slug}/contacts/${item.id}`;
+				const options = {
+					method: 'DELETE',
+					headers: {
+						"Content-Type": "application/json"
+					}
+				};
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return;
+				}
+				getActions().getContacts();
 			}
 		}
 	};
