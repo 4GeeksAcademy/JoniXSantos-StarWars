@@ -5,3 +5,18 @@
     one more css for each page that will contain the selected used 
     on that page only (the ones not reused in other pages).
 */
+.fa-edit:hover {
+    color: green;
+    cursor: pointer;
+}
+
+.fa-trash-alt:hover {
+    color: red;
+    cursor: pointer;
+}
+
+.footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+  }
