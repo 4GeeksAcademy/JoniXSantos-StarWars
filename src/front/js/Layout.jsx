@@ -10,6 +10,9 @@ import { Footer } from "./component/Footer.jsx";
 import { Home } from "./pages/Home.jsx";
 import { Demo } from "./pages/Demo.jsx";
 import { Single } from "./pages/Single.jsx";
+import { Characters } from "./pages/Characters.jsx";
+import { Planets } from "./pages/Planets.jsx";
+import { Starships } from "./pages/Starships.jsx";
 import { Contact } from "./pages/Contact.jsx";
 import { AddContact } from "./pages/AddContact.jsx";
 import { EditContact } from "./pages/EditContact.jsx";
@@ -30,6 +33,9 @@ const Layout = () => {
                     <Navbar />
                     <Routes>
                         <Route element={<Home />} path="/" />
+                        <Route element={<Characters />} path="/characters" />
+                        <Route element={<Planets />} path="/planets" />
+                        <Route element={<Starships />} path="/starships" />
                         <Route element={<Contact />} path="/contact-list" />
                         <Route element={<AddContact />} path="/add-contact" />
                         <Route element={<EditContact />} path="/edit-contact" />
