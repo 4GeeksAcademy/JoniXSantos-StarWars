@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext.js";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 export const Contact = () => {
@@ -24,7 +24,7 @@ export const Contact = () => {
     return (
         <div className="container mt-4">
             <Link to="/add-contact">
-				<button className="btn btn-success mb-4">Add a new contact</button>
+				<button className="btn btn-secondary mb-4">Add a new contact</button>
 			</Link>
             {contacts.map((item, index) => (
                 <div key={index} className="d-flex col-12 border p-4 mb-4">

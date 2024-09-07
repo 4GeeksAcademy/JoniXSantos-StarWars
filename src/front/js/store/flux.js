@@ -15,9 +15,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			],
 			host: 'https://playground.4geeks.com/contact',
+			hostSW: 'https://swapi.tech/api',
 			slug: 'jonicruz',
+			characters: [],
+			planets: [],
+			starships: [],
 			contacts: [],
-			currentContact: {}
+			currentContact: {},
+			favorites: []
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -50,6 +55,36 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
+			},
+			getCharacters: async () => {
+				const uri = `${getStore().hostSW}/people`;
+				const response = await fetch(uri);
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return;
+				};
+				const data = await response.json();
+				setStore({ characters: data.results })
+			},
+			getPlanets: async () => {
+				const uri = `${getStore().hostSW}/planets`;
+				const response = await fetch(uri);
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return;
+				};
+				const data = await response.json();
+				setStore({ planets: data.results })
+			},
+			getStarships: async () => {
+				const uri = `${getStore().hostSW}/starships`;
+				const response = await fetch(uri);
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return;
+				};
+				const data = await response.json();
+				setStore({ starships: data.results })
 			},
 			getContacts: async () => {
 				const uri = `${getStore().host}/agendas/${getStore().slug}/contacts`;
