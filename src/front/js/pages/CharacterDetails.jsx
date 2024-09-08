@@ -1,10 +1,11 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext.js";
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export const CharacterDetails = () => {
     const { store, actions } = useContext(Context);
     const { id } = useParams();
+    const navigate = useNavigate();
     const character = store.characterDetails;
 
     useEffect(() => {
@@ -22,7 +23,7 @@ export const CharacterDetails = () => {
                     <div className="col-4">
                         <img src={`https://starwars-visualguide.com/assets/img/characters/${id}.jpg`} onError={handleImgError} className="card-img-top" alt={`${character.name} image`} />
                     </div>
-                    <div className="col-8">
+                    <div className="col-6">
                         <div className="card-body">
                             <h1 className="mb-5">{character.name}</h1>
                             <p className="card-text"><strong>Gender:</strong> {character.gender}</p>
@@ -33,6 +34,9 @@ export const CharacterDetails = () => {
                             <p className="card-text"><strong>Eyes Color:</strong> {character.eye_color}</p>
                             <p className="card-text"><strong>Birth Year:</strong> {character.birth_year}</p>
                         </div>
+                    </div>
+                    <div className="col-2">
+                        <button type="button" className="btn btn-secondary mt-4" onClick={() => navigate("/characters")}>Return to Characters</button>
                     </div>
                 </div>
             </div>
