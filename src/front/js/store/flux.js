@@ -86,6 +86,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const data = await response.json();
 				setStore({ starships: data.results })
 			},
+			addToFavorites: (item) => {
+				const favorites = [...getStore().favorites, item];
+				setStore({ favorites });
+			},
+			removeFromFavorites: (item) => {
+				const favorites = getStore().favorites.filter(currentItem => currentItem.uid !== item.uid);
+				setStore({ favorites });
+			},
 			getContacts: async () => {
 				const uri = `${getStore().host}/agendas/${getStore().slug}/contacts`;
 				const response = await fetch(uri);
