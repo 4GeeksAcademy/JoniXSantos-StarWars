@@ -1,10 +1,11 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext.js";
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export const PlanetDetails = () => {
     const { store, actions } = useContext(Context);
     const { id } = useParams();
+    const navigate = useNavigate();
     const planet = store.planetDetails;
 
     useEffect(() => {
@@ -22,7 +23,7 @@ export const PlanetDetails = () => {
                     <div className="col-4">
                         <img src={`https://starwars-visualguide.com/assets/img/planets/${id}.jpg`} onError={handleImgError} className="card-img-top" alt={`${planet.name} image`} />
                     </div>
-                    <div className="col-8">
+                    <div className="col-6">
                         <div className="card-body">
                             <h1 className="mb-4">{planet.name}</h1>
                             <p className="card-text"><strong>Diameter:</strong> {planet.diameter}</p>
@@ -34,6 +35,9 @@ export const PlanetDetails = () => {
                             <p className="card-text"><strong>Terrain:</strong> {planet.terrain}</p>
                             <p className="card-text"><strong>Surface Water:</strong> {planet.surface_water}</p>
                         </div>
+                    </div>
+                    <div className="col-2">
+                        <button type="button" className="btn btn-secondary mt-4" onClick={() => navigate("/planets")}>Return to Planets</button>
                     </div>
                 </div>
             </div>
