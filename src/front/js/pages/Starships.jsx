@@ -25,7 +25,7 @@ export const Starships = () => {
                     </div>
                     <div className="card-body d-flex justify-content-between">
                         <button className="btn btn-secondary">Details</button>
-                        <button className="btn btn-outline-danger"><strong>♡</strong></button>
+                        <button className="btn btn-outline-danger" onClick={() => actions.addToFavorites(item)}><strong>♡</strong></button>
                     </div>
                 </div> 
             ))};
