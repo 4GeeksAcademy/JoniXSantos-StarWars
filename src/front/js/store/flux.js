@@ -18,8 +18,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 			hostSW: 'https://swapi.tech/api',
 			slug: 'jonicruz',
 			characters: [],
+			characterDetails: {},
 			planets: [],
+			planetDetails: {},
 			starships: [],
+			starshipDetails: {},
 			contacts: [],
 			currentContact: {},
 			favorites: []
@@ -66,6 +69,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const data = await response.json();
 				setStore({ characters: data.results })
 			},
+			getCharacterDetails: async (id) => {
+				const uri = `${getStore().hostSW}/people/${id}`;
+				const response = await fetch(uri);
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return;
+				};
+				const data = await response.json();
+				setStore({ characterDetails: data.result.properties })
+			},
 			getPlanets: async () => {
 				const uri = `${getStore().hostSW}/planets`;
 				const response = await fetch(uri);
@@ -76,6 +89,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const data = await response.json();
 				setStore({ planets: data.results })
 			},
+			getPlanetDetails: async (id) => {
+				const uri = `${getStore().hostSW}/planets/${id}`;
+				const response = await fetch(uri);
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return;
+				};
+				const data = await response.json();
+				setStore({ planetDetails: data.result.properties })
+			},
 			getStarships: async () => {
 				const uri = `${getStore().hostSW}/starships`;
 				const response = await fetch(uri);
@@ -85,6 +108,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 				};
 				const data = await response.json();
 				setStore({ starships: data.results })
+			},
+			getStarshipDetails: async (id) => {
+				const uri = `${getStore().hostSW}/starships/${id}`;
+				const response = await fetch(uri);
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return;
+				};
+				const data = await response.json();
+				setStore({ starshipDetails: data.result.properties })
 			},
 			addToFavorites: (item) => {
 				const favorites = [...getStore().favorites, item];

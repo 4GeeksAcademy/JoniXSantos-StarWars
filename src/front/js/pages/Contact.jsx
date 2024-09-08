@@ -28,9 +28,9 @@ export const Contact = () => {
 			</Link>
             {contacts.map((item, index) => (
                 <div key={index} className="d-flex col-12 border p-4 mb-4">
-                    <img className="justify-content-start me-5" style={{width: '100px'}} src="https://upload.wikimedia.org/wikipedia/commons/9/93/Google_Contacts_icon.svg" />
-                    <div className="justify-content-center col-10">
-                        <h5>{item.name}</h5>
+                    <img className="justify-content-start me-5" style={{width: '150px'}} src="https://i.pinimg.com/564x/ca/db/dc/cadbdcfbe780c9d66f733ed071614f12.jpg" />
+                    <div className="justify-content-center col-9">
+                        <h4>{item.name}</h4>
                         <p><i className="fas fa-phone"></i> {item.phone}</p>
                         <p><i className="fas fa-envelope"></i> {item.email}</p>
                         <p><i className="fas fa-map-marker-alt"></i> {item.address}</p>
@@ -42,7 +42,7 @@ export const Contact = () => {
                 </div>
             ))}
             <div className={`alert alert-danger text-center ${contacts.length == 0 ? '' : 'd-none' }`} role="alert">
-                We don't have any contact yet!
+                We don't have any contacts yet!
             </div>
         </div>
     );
