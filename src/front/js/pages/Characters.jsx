@@ -1,15 +1,12 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Context } from "../store/appContext.js";
 import { useNavigate } from 'react-router-dom';
+import { Spinner } from "../component/Spinner.jsx";
 
 export const Characters = () => {
     const { store, actions } = useContext(Context);
     const navigate = useNavigate();
     const characters = store.characters;
-
-    useEffect(() => {
-        actions.getCharacters();
-    }, []);
 
     const handleImgError = (event) => {
         event.target.src = "https://starwars-visualguide.com/assets/img/big-placeholder.jpg";
@@ -18,7 +15,7 @@ export const Characters = () => {
     return (
         <div className="container">
             <h1 className="text-center my-4">Characters</h1>
-            <div className="row row-cols-1 row-cols-md-2 g-4 mb-5">
+            {characters.length === 0 ? <Spinner /> : <div className="row row-cols-1 row-cols-md-2 g-4 mb-5">
             {characters.map((item, index) => (
                 <div key={index} className="card ms-3 me-4" style={{width: '18rem'}}>
                     <img src={`https://starwars-visualguide.com/assets/img/characters/${item.uid}.jpg`} onError={handleImgError} className="card-img-top" alt={`${item.name} image`} />
@@ -31,7 +28,7 @@ export const Characters = () => {
                     </div>
                 </div> 
             ))}
-            </div>
+            </div>}
         </div>   
     );
 }

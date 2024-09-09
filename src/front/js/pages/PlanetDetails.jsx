@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext.js";
 import { useNavigate, useParams } from 'react-router-dom';
+import { Spinner } from "../component/Spinner.jsx";
 
 export const PlanetDetails = () => {
     const { store, actions } = useContext(Context);
@@ -9,6 +10,7 @@ export const PlanetDetails = () => {
     const planet = store.planetDetails;
 
     useEffect(() => {
+        actions.clearPlanetDetails();
         actions.getPlanetDetails(id);
     }, [id]);
 
@@ -18,7 +20,7 @@ export const PlanetDetails = () => {
     
     return (
         <div className="container">
-            <div className="card my-4">
+            {!planet ? <Spinner /> : <div className="card my-4">
                 <div className="row">
                     <div className="col-4">
                         <img src={`https://starwars-visualguide.com/assets/img/planets/${id}.jpg`} onError={handleImgError} className="card-img-top" alt={`${planet.name} image`} />
@@ -40,7 +42,7 @@ export const PlanetDetails = () => {
                         <button type="button" className="btn btn-secondary mt-4" onClick={() => navigate("/planets")}>Return to Planets</button>
                     </div>
                 </div>
-            </div>
+            </div>}
         </div>
     )
 }

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 export const Navbar = () => {
 	const { store, actions } = useContext(Context);
 	return (
-		<nav className="navbar navbar-expand-lg bg-dark">
+		<nav className="navbar navbar-expand-lg bg-dark sticky-top">
 			<div className="container">
 				<Link to="/">
 					<span className="navbar-brand mb-0 h1"><img style={{width: '100px'}} src="https://pngimg.com/uploads/star_wars_logo/star_wars_logo_PNG29.png"/></span>
@@ -13,8 +13,8 @@ export const Navbar = () => {
 				<button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 				<span className="navbar-toggler-icon"></span>
 				</button>
-				<div className="collapse navbar-collapse d-flex justify-content-end" id="navbarNavDropdown">
-				<ul className="navbar-nav">
+				<div className="collapse navbar-collapse" id="navbarNavDropdown">
+				<ul className="navbar-nav ms-auto">
 					<Link className="nav-link text-light" to="/characters">
 						Characters
 					</Link>
@@ -34,7 +34,7 @@ export const Navbar = () => {
 								{store.favorites.length}
 							</span>
 						</button>
-						<ul className="dropdown-menu">
+						<ul className="dropdown-menu dropdown-menu-end">
 							{store.favorites.length == 0 ? <li className="text-center">Nothing yet.</li> : ''}
 							{store.favorites.map((item, index) => (
 								<li key={index} className="text-center">{item.name} <i className="fas fa-trash-alt" onClick={() => actions.removeFromFavorites(item)}></i></li>
