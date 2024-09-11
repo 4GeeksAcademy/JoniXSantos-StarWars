@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext.js";
 import { useNavigate, useParams } from 'react-router-dom';
+import { Spinner } from "../component/Spinner.jsx";
 
 export const StarshipDetails = () => {
     const { store, actions } = useContext(Context);
@@ -10,6 +11,7 @@ export const StarshipDetails = () => {
 
     useEffect(() => {
         actions.getStarshipDetails(id);
+        return () => actions.clearStarshipDetails();
     }, [id]);
 
     const handleImgError = (event) => {
@@ -18,7 +20,7 @@ export const StarshipDetails = () => {
     
     return (
         <div className="container">
-            <div className="card my-4">
+            {!starship.name ? <Spinner /> : <div className="card my-4">
                 <div className="row">
                     <div className="col-4">
                         <img src={`https://starwars-visualguide.com/assets/img/starships/${id}.jpg`} onError={handleImgError} className="card-img-top" alt={`${starship.name} image`} />
@@ -44,7 +46,7 @@ export const StarshipDetails = () => {
                         <button type="button" className="btn btn-secondary mt-4" onClick={() => navigate("/starships")}>Return to Starships</button>
                     </div>
                 </div>
-            </div>
+            </div>}
         </div>
     )
 }

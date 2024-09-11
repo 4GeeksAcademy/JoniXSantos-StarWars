@@ -1,15 +1,12 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Context } from "../store/appContext.js";
 import { useNavigate } from "react-router-dom";
+import { Spinner } from "../component/Spinner.jsx";
 
 export const Starships = () => {
     const { store, actions } = useContext(Context);
     const navigate = useNavigate();
     const starships = store.starships;
-
-    useEffect(() => {
-        actions.getStarships();
-    }, []);
 
     const handleImgError = (event) => {
         event.target.src = "https://starwars-visualguide.com/assets/img/big-placeholder.jpg";
@@ -18,7 +15,7 @@ export const Starships = () => {
     return (
         <div className="container">
             <h1 className="text-center my-4">Starships</h1>
-            <div className="row row-cols-1 row-cols-md-2 g-4 mb-5">
+            {starships.length === 0 ? <Spinner /> : <div className="d-flex justify-content-center row row-cols-1 row-cols-md-2 g-4 mb-5">
             {starships.map((item, index) => (
                 <div key={index} className="card ms-3 me-4" style={{width: '18rem'}}>
                     <img src={`https://starwars-visualguide.com/assets/img/starships/${item.uid}.jpg`} onError={handleImgError} className="card-img-top" alt={`${item.name} image`} />
@@ -30,8 +27,8 @@ export const Starships = () => {
                         <button className="btn btn-outline-danger" onClick={() => actions.addToFavorites(item)}><strong>♡</strong></button>
                     </div>
                 </div> 
-            ))};
-            </div>
+            ))}
+            </div>}
         </div>   
     );
 }

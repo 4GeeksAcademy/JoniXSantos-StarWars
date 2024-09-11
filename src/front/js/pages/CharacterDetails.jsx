@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext.js";
 import { useNavigate, useParams } from 'react-router-dom';
+import { Spinner } from "../component/Spinner.jsx";
 
 export const CharacterDetails = () => {
     const { store, actions } = useContext(Context);
@@ -10,6 +11,7 @@ export const CharacterDetails = () => {
 
     useEffect(() => {
         actions.getCharacterDetails(id);
+        return () => actions.clearCharacterDetails();
     }, [id]);
 
     const handleImgError = (event) => {
@@ -18,7 +20,7 @@ export const CharacterDetails = () => {
     
     return (
         <div className="container">
-            <div className="card my-4">
+            {!character.name ? <Spinner /> : <div className="card my-4">
                 <div className="row">
                     <div className="col-4">
                         <img src={`https://starwars-visualguide.com/assets/img/characters/${id}.jpg`} onError={handleImgError} className="card-img-top" alt={`${character.name} image`} />
@@ -39,7 +41,7 @@ export const CharacterDetails = () => {
                         <button type="button" className="btn btn-secondary mt-4" onClick={() => navigate("/characters")}>Return to Characters</button>
                     </div>
                 </div>
-            </div>
+            </div>}
         </div>
     )
 }

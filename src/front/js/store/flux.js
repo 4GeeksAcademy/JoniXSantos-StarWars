@@ -79,6 +79,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const data = await response.json();
 				setStore({ characterDetails: data.result.properties })
 			},
+			clearCharacterDetails: () => {
+				setStore({ characterDetails: {} });
+			},
 			getPlanets: async () => {
 				const uri = `${getStore().hostSW}/planets`;
 				const response = await fetch(uri);
@@ -99,6 +102,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const data = await response.json();
 				setStore({ planetDetails: data.result.properties })
 			},
+			clearPlanetDetails: () => {
+				setStore({ planetDetails: {} });
+			},
 			getStarships: async () => {
 				const uri = `${getStore().hostSW}/starships`;
 				const response = await fetch(uri);
@@ -118,6 +124,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				};
 				const data = await response.json();
 				setStore({ starshipDetails: data.result.properties })
+			},
+			clearStarshipDetails: () => {
+				setStore({ starshipDetails: {} });
 			},
 			addToFavorites: (item) => {
 				const favorites = [...getStore().favorites, item];
