@@ -10,8 +10,8 @@ export const StarshipDetails = () => {
     const starship = store.starshipDetails;
 
     useEffect(() => {
-        actions.clearStarshipDetails();
         actions.getStarshipDetails(id);
+        return () => actions.clearStarshipDetails();
     }, [id]);
 
     const handleImgError = (event) => {
@@ -20,7 +20,7 @@ export const StarshipDetails = () => {
     
     return (
         <div className="container">
-            {!starship ? <Spinner /> : <div className="card my-4">
+            {!starship.name ? <Spinner /> : <div className="card my-4">
                 <div className="row">
                     <div className="col-4">
                         <img src={`https://starwars-visualguide.com/assets/img/starships/${id}.jpg`} onError={handleImgError} className="card-img-top" alt={`${starship.name} image`} />

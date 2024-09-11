@@ -10,8 +10,8 @@ export const CharacterDetails = () => {
     const character = store.characterDetails;
 
     useEffect(() => {
-        actions.clearCharacterDetails();
         actions.getCharacterDetails(id);
+        return () => actions.clearCharacterDetails();
     }, [id]);
 
     const handleImgError = (event) => {
@@ -20,7 +20,7 @@ export const CharacterDetails = () => {
     
     return (
         <div className="container">
-            {!character ? <Spinner /> : <div className="card my-4">
+            {!character.name ? <Spinner /> : <div className="card my-4">
                 <div className="row">
                     <div className="col-4">
                         <img src={`https://starwars-visualguide.com/assets/img/characters/${id}.jpg`} onError={handleImgError} className="card-img-top" alt={`${character.name} image`} />

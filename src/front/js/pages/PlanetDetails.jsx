@@ -10,8 +10,8 @@ export const PlanetDetails = () => {
     const planet = store.planetDetails;
 
     useEffect(() => {
-        actions.clearPlanetDetails();
         actions.getPlanetDetails(id);
+        return () => actions.clearPlanetDetails();
     }, [id]);
 
     const handleImgError = (event) => {
@@ -20,7 +20,7 @@ export const PlanetDetails = () => {
     
     return (
         <div className="container">
-            {!planet ? <Spinner /> : <div className="card my-4">
+            {!planet.name ? <Spinner /> : <div className="card my-4">
                 <div className="row">
                     <div className="col-4">
                         <img src={`https://starwars-visualguide.com/assets/img/planets/${id}.jpg`} onError={handleImgError} className="card-img-top" alt={`${planet.name} image`} />
