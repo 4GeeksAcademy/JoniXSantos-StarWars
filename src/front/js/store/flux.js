@@ -129,12 +129,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ starshipDetails: {} });
 			},
 			addToFavorites: (item) => {
-				const favorites = [...getStore().favorites, item];
-				setStore({ favorites });
+				const updatedFavorites = [...getStore().favorites, item]
+				setStore({ favorites: updatedFavorites });
 			},
 			removeFromFavorites: (item) => {
-				const favorites = getStore().favorites.filter(currentItem => currentItem.uid !== item.uid);
-				setStore({ favorites });
+				const updatedFavorites = getStore().favorites.filter(currentItem => currentItem.name !== item.name);
+				setStore({ favorites: updatedFavorites });
 			},
 			getContacts: async () => {
 				const uri = `${getStore().host}/agendas/${getStore().slug}/contacts`;

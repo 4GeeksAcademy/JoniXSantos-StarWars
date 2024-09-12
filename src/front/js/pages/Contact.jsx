@@ -34,7 +34,7 @@ export const Contact = () => {
                     </div>
                     <div>
                         <i className="fas fa-edit me-3" onClick={() => handleEdit(item)}></i>
-                        <i className="fas fa-trash-alt" onClick={() => handleDelete(item)}></i>
+                        <i className="fas fa-trash-alt bin" onClick={() => handleDelete(item)}></i>
                     </div>
                 </div>
             ))}
