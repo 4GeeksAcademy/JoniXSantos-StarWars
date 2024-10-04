@@ -10,13 +10,7 @@
     cursor: pointer;
 }
 
-.fa-trash-alt:hover {
+.bin:hover {
     color: red;
     cursor: pointer;
 }
-
-.footer {
-    position: relative;
-    bottom: 0;
-    width: 100%;
-  }

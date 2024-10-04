@@ -10,6 +10,12 @@ import { Footer } from "./component/Footer.jsx";
 import { Home } from "./pages/Home.jsx";
 import { Demo } from "./pages/Demo.jsx";
 import { Single } from "./pages/Single.jsx";
+import { Characters } from "./pages/Characters.jsx";
+import { CharacterDetails } from "./pages/CharacterDetails.jsx";
+import { Planets } from "./pages/Planets.jsx";
+import { PlanetDetails } from "./pages/PlanetDetails.jsx";
+import { Starships } from "./pages/Starships.jsx";
+import { StarshipDetails } from "./pages/StarshipDetails.jsx";
 import { Contact } from "./pages/Contact.jsx";
 import { AddContact } from "./pages/AddContact.jsx";
 import { EditContact } from "./pages/EditContact.jsx";
@@ -26,17 +32,23 @@ const Layout = () => {
     if(!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL/ >;
 
     return (
-        <div>
+        <div className="d-flex flex-column min-vh-100">
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
                     <Navbar />
                     <Routes>
                         <Route element={<Home />} path="/" />
-                        <Route element={<SignUp />} path="/sign-up" />
-                        <Route element={<Login />} path="/login" />
+                        <Route element={<Characters />} path="/characters" />
+                        <Route element={<CharacterDetails />} path="/characters/:id" />
+                        <Route element={<Planets />} path="/planets" />
+                        <Route element={<PlanetDetails />} path="/planets/:id" />
+                        <Route element={<Starships />} path="/starships" />
+                        <Route element={<StarshipDetails />} path="/starships/:id" />
                         <Route element={<Contact />} path="/contact-list" />
                         <Route element={<AddContact />} path="/add-contact" />
                         <Route element={<EditContact />} path="/edit-contact" />
+                        <Route element={<SignUp />} path="/sign-up" />
+                        <Route element={<Login />} path="/login" />
                         <Route element={<h1>Not found!</h1>} path="*" />
                     </Routes>
                     <Footer />

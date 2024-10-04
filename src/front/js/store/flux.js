@@ -15,9 +15,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			],
 			host: 'https://playground.4geeks.com/contact',
+			hostSW: 'https://swapi.tech/api',
 			slug: 'jonicruz',
+			characters: [],
+			characterDetails: {},
+			planets: [],
+			planetDetails: {},
+			starships: [],
+			starshipDetails: {},
 			contacts: [],
-			currentContact: {}
+			currentContact: {},
+			favorites: []
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -50,6 +58,83 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
+			},
+			getCharacters: async () => {
+				const uri = `${getStore().hostSW}/people`;
+				const response = await fetch(uri);
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return;
+				};
+				const data = await response.json();
+				setStore({ characters: data.results })
+			},
+			getCharacterDetails: async (id) => {
+				const uri = `${getStore().hostSW}/people/${id}`;
+				const response = await fetch(uri);
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return;
+				};
+				const data = await response.json();
+				setStore({ characterDetails: data.result.properties })
+			},
+			clearCharacterDetails: () => {
+				setStore({ characterDetails: {} });
+			},
+			getPlanets: async () => {
+				const uri = `${getStore().hostSW}/planets`;
+				const response = await fetch(uri);
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return;
+				};
+				const data = await response.json();
+				setStore({ planets: data.results })
+			},
+			getPlanetDetails: async (id) => {
+				const uri = `${getStore().hostSW}/planets/${id}`;
+				const response = await fetch(uri);
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return;
+				};
+				const data = await response.json();
+				setStore({ planetDetails: data.result.properties })
+			},
+			clearPlanetDetails: () => {
+				setStore({ planetDetails: {} });
+			},
+			getStarships: async () => {
+				const uri = `${getStore().hostSW}/starships`;
+				const response = await fetch(uri);
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return;
+				};
+				const data = await response.json();
+				setStore({ starships: data.results })
+			},
+			getStarshipDetails: async (id) => {
+				const uri = `${getStore().hostSW}/starships/${id}`;
+				const response = await fetch(uri);
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return;
+				};
+				const data = await response.json();
+				setStore({ starshipDetails: data.result.properties })
+			},
+			clearStarshipDetails: () => {
+				setStore({ starshipDetails: {} });
+			},
+			addToFavorites: (item) => {
+				const updatedFavorites = [...getStore().favorites, item]
+				setStore({ favorites: updatedFavorites });
+			},
+			removeFromFavorites: (item) => {
+				const updatedFavorites = getStore().favorites.filter(currentItem => currentItem.name !== item.name);
+				setStore({ favorites: updatedFavorites });
 			},
 			getContacts: async () => {
 				const uri = `${getStore().host}/agendas/${getStore().slug}/contacts`;
