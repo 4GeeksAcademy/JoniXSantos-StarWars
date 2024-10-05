@@ -319,7 +319,8 @@ def user_following(id):
 def characters():
     response_body = {}
     rows = db.session.execute(db.select(Characters)).scalars()
-    if not rows:
+    result = [row.serialize() for row in rows]
+    if len(result) == 0:
         url = 'https://swapi.tech/api/people'
         response = requests.get(url)
         if response.status_code != 200:
@@ -344,7 +345,7 @@ def characters():
                 db.session.add(new_character)
         db.session.commit()
         rows = db.session.execute(db.select(Characters)).scalars()
-    result = [row.serialize() for row in rows]
+        result = [row.serialize() for row in rows]
     response_body['message'] = 'List of the characters (GET)'
     response_body['results'] = result
     return response_body, 200
@@ -409,12 +410,37 @@ def user_favorite_characters(id):
 @api.route('/planets', methods=['GET'])
 def planets():
     response_body = {}
-    if request.method == 'GET':
+    rows = db.session.execute(db.select(Planets)).scalars()
+    result = [row.serialize() for row in rows]
+    if len(result) == 0:
+        url = 'https://swapi.tech/api/planets'
+        response = requests.get(url)
+        if response.status_code != 200:
+            response_body['message'] = 'Error fetching data from SWAPI'
+            return response_body, 502
+        data = response.json()
+        total_records = data['total_records']
+        for i in range(1, total_records + 1):
+            planet_url = f'https://swapi.tech/api/planets/{i}'
+            planet_response = requests.get(planet_url)
+            if planet_response.status_code == 200:
+                planet_data = planet_response.json()['result']['properties']
+                new_planet = Planets(name=planet_data['name'],
+                                     diameter=planet_data['diameter'],
+                                     rotation_period=planet_data['rotation_period'],
+                                     orbital_period=planet_data['orbital_period'],
+                                     gravity=planet_data['gravity'],
+                                     population=planet_data['population'],
+                                     climate=planet_data['climate'],
+                                     terrain=planet_data['terrain']
+                                    )
+                db.session.add(new_planet)
+        db.session.commit()
         rows = db.session.execute(db.select(Planets)).scalars()
         result = [row.serialize() for row in rows]
-        response_body['message'] = 'List of the planets (GET)'
-        response_body['results'] = result
-        return response_body, 200
+    response_body['message'] = 'List of the planets (GET)'
+    response_body['results'] = result
+    return response_body, 200
     
 
 @api.route('/planets/<int:id>', methods=['GET'])
@@ -476,12 +502,41 @@ def user_favorite_planets(id):
 @api.route('/starships', methods=['GET'])
 def starships():
     response_body = {}
-    if request.method == 'GET':
+    rows = db.session.execute(db.select(Starships)).scalars()
+    result = [row.serialize() for row in rows]
+    if len(result) == 0:
+        url = 'https://swapi.tech/api/starships'
+        response = requests.get(url)
+        if response.status_code != 200:
+           response_body['message'] = 'Error fetching data from SWAPI'
+           return response_body, 502
+        data = response.json()
+        total_records = data['total_records']
+        for i in range(1, total_records + 1):
+            starship_url = f'https://swapi.tech/api/starships/{i}'
+            starship_response = requests.get(starship_url)
+            if starship_response.status_code == 200:
+                starship_data = starship_response.json()['result']['properties']
+                new_starship = Starships(model=starship_data['model'],
+                                         starship_class=starship_data['starship_class'],
+                                         manufacturer=starship_data['manufacturer'],
+                                         cost_in_credits=starship_data['cost_in_credits'],
+                                         length=starship_data['length'],
+                                         crew=starship_data['crew'],
+                                         passengers=starship_data['passengers'],
+                                         max_atmosphering_speed=starship_data['max_atmosphering_speed'],
+                                         hyperdrive_rating=starship_data['hyperdrive_rating'],
+                                         MGLT=starship_data['MGLT'],
+                                         cargo_capacity=starship_data['cargo_capacity'],
+                                         consumables=starship_data['consumables']
+                                    )
+                db.session.add(new_starship)
+        db.session.commit()
         rows = db.session.execute(db.select(Starships)).scalars()
         result = [row.serialize() for row in rows]
-        response_body['message'] = 'List of the starships (GET)'
-        response_body['results'] = result
-        return response_body, 200
+    response_body['message'] = 'List of the starships (GET)'
+    response_body['results'] = result
+    return response_body, 200
     
 
 @api.route('/starships/<int:id>', methods=['GET'])
