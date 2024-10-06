@@ -35,6 +35,7 @@ def login():
     access_token = create_access_token(identity={'email': user.email, 'user_id': user.id, 'is_active': user.is_active, 'is_admin': user.is_admin})
     response_body['message'] = f'Welcome, {email}'
     response_body['access_token'] = access_token
+    response_body['results'] = user.serialize()
     return response_body, 200
 
 
@@ -48,14 +49,31 @@ def protected():
     return response_body, 200
 
 
-@api.route('/users', methods=['GET'])
+@api.route('/users', methods=['GET', 'POST'])
 def users():
     response_body = {}
-    rows = db.session.execute(db.select(Users)).scalars()
-    result = [row.serialize() for row in rows]
-    response_body['message'] = 'List of the users and their posts (GET)'
-    response_body['results'] = result
-    return response_body, 200
+    if request.method == 'GET':
+        rows = db.session.execute(db.select(Users)).scalars()
+        result = [row.serialize() for row in rows]
+        response_body['message'] = 'List of the users and their posts (GET)'
+        response_body['results'] = result
+        return response_body, 200
+    if request.method == 'POST':
+        data = request.json
+        if not data.get('email') or not data.get('password'):
+            response_body['message'] = 'Email or password required'
+            return response_body, 400
+        row = Users(email = data.get('email'),
+                    password = data.get('password'),
+                    is_active = data.get('is_active', True),
+                    is_admin = data.get('is_admin', False),
+                    first_name = data.get('first_name'),
+                    last_name = data.get('last_name'))
+        db.session.add(row)
+        db.session.commit()
+        response_body['message'] = 'A new user was added to the data base (POST)'
+        response_body['results'] = row.serialize()
+        return response_body, 200
 
 
 @api.route('/users/<int:id>', methods=['GET'])

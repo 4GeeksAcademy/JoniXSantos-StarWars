@@ -1,9 +1,19 @@
 import React, { useContext } from "react";
 import { Context } from "../store/appContext.js";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
 	const { store, actions } = useContext(Context);
+	const navigate = useNavigate();
+
+	const handleLogin = () => {
+		if (store.isLogged) {
+			actions.logout();
+		} else {
+			navigate('/login')
+		}
+	}
+
 	return (
 		<nav className="navbar navbar-expand bg-dark sticky-top">
 			<div className="container">
@@ -12,6 +22,11 @@ export const Navbar = () => {
 				</Link>
 				<div className="navbar-nav ms-auto" id="navbarNavDropdown">
 				<ul className="navbar-nav">
+					<li className="nav-item">
+						<button type="button" className="btn btn-danger me-2" onClick={handleLogin}>
+							{store.isLogged ? 'Logout' : 'Login'}
+						</button>
+					</li>
 					<li className="nav-item">
 						<Link className="nav-link text-light" to="/characters">
 							Characters

@@ -17,6 +17,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			host: 'https://playground.4geeks.com/contact',
 			hostSW: 'https://swapi.tech/api',
 			slug: 'jonicruz',
+			user: '',
+			isLogged: false,
 			characters: [],
 			characterDetails: {},
 			planets: [],
@@ -58,6 +60,71 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
+			},
+			signUp: async (dataToSend) => {
+				const uri = `${process.env.BACKEND_URL}/api/users`;
+				const options = {
+					method: 'POST',
+					headers: {
+						"Content-Type": 'application/json'
+					},
+					body: JSON.stringify(dataToSend)
+				};
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log('Error', response.status, response.statusText)
+					return
+				};
+				response.json();
+			},
+			login: async (dataToSend) => {
+				const uri = `${process.env.BACKEND_URL}/api/login`;
+				const options = {
+					method: 'POST',
+					headers: {
+						"Content-Type": 'application/json'
+					},
+					body: JSON.stringify(dataToSend)
+				};
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log('Error', response.status, response.statusText)
+					return
+				};
+				const data = await response.json();
+				localStorage.setItem('token', data.access_token);
+				localStorage.setItem('user', JSON.stringify(data.results));
+				setStore({ isLogged: true, user: data.results.email })
+			},
+			accessProtected: async () => {
+				const token = localStorage.getItem('token');
+				const uri = `${process.env.BACKEND_URL}/api/protected`;
+				const options = {
+					method: 'GET',
+					headers: {
+						"Content-Type": 'application/json',
+						"Authorization": `Bearer ${token}`
+					}
+				};
+				const response = await fetch(uri, options)
+				if (!response.ok) {
+					console.log('Error', response.status, response.statusText)
+					return
+				};
+				const data = await response.json();
+				console.log(data)
+			},
+			isLogged: () => {
+				const token = localStorage.getItem('token');
+				if (token) {
+					const userData = JSON.parse(localStorage.getItem('user'));
+					setStore({ isLogged: true, user: userData.email })
+				}
+			},
+			logout: () => {
+				setStore({ isLogged: false, user: '' });
+				localStorage.removeItem('token');
+				localStorage.removeItem('user')
 			},
 			getCharacters: async () => {
 				const uri = `${getStore().hostSW}/people`;
