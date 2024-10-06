@@ -20,8 +20,8 @@ export const SignUp = () => {
     }
 
     return (
-        <div className="container col-lg-4 col-md-6 col-sm-8 needs-validation" novalidate>
-            <form onSubmit={handleSubmit}>
+        <div className="container col-lg-4 col-md-6 col-sm-8">
+            <form onSubmit={handleSubmit} className="needs-validation" novalidate>
                 <h1 className="text-center my-4">Sign Up</h1>
                 <div className="mb-3">
                     <label htmlFor="inputFirstName" className="form-label">First Name</label>
