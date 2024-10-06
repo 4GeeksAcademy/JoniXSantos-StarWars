@@ -89,12 +89,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const response = await fetch(uri, options);
 				if (!response.ok) {
 					console.log('Error', response.status, response.statusText)
-					return
+					return false
 				};
 				const data = await response.json();
 				localStorage.setItem('token', data.access_token);
 				localStorage.setItem('user', JSON.stringify(data.results));
-				setStore({ isLogged: true, user: data.results.email })
+				setStore({ isLogged: true, user: data.results.email });
+				return true
 			},
 			accessProtected: async () => {
 				const token = localStorage.getItem('token');
